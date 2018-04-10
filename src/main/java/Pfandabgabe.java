@@ -31,8 +31,8 @@ public class Pfandabgabe {
             }
             freieAutomaten--;
             kunde.setPfandabgabe(this);
-            System.out.println("Es ist ein Automat frei.");
-            System.out.println(kunde + " hat " + kunde.getKorbAnzahl() + " Körbe dabei und gibt diese ab.");
+            logger.info("Es ist ein Automat frei.");
+            logger.info(kunde + " hat " + kunde.getKorbAnzahl() + " Körbe dabei und gibt diese ab.");
         } finally {
             lock.unlock();
         }

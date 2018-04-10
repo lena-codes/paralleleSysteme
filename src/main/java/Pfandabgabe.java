@@ -1,25 +1,30 @@
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Random;
 
 public class Pfandabgabe {
 
     private int freieAutomaten;
 
+    private static Logger logger = LoggerFactory.getLogger(Pfandabgabe.class);
+
     public Pfandabgabe(int automatenAnzahl) {
         this.freieAutomaten = automatenAnzahl;
     }
 
     public synchronized void automatBenutzen(Kunde kunde) throws InterruptedException {
-        System.out.println("Freie Automaten: " + freieAutomaten);
+        logger.info("Freie Automaten: " + freieAutomaten);
         while (freieAutomaten == 0) {
-            System.out.println("Gerade sind keine Automaten frei.");
+            logger.info("Gerade sind keine Automaten frei.");
             try {
                 wait();
             } catch (InterruptedException ie) {
             }
         }
         freieAutomaten--;
-        System.out.println("Es ist ein Automat frei.");
-        System.out.println(kunde + " hat " + kunde.getKorbAnzahl() + " Körbe dabei und gibt diese ab.");
+        logger.info("Es ist ein Automat frei.");
+        logger.info(kunde + " hat " + kunde.getKorbAnzahl() + " Körbe dabei und gibt diese ab.");
         kunde.setPfandabgabe(this);
         Thread pfandAbgabeThread = new Thread(kunde);
         pfandAbgabeThread.start();

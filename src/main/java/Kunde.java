@@ -1,3 +1,6 @@
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Random;
 
 public class Kunde implements Runnable {
@@ -5,6 +8,8 @@ public class Kunde implements Runnable {
     private final int id;
     private int korbAnzahl;
     private Pfandabgabe pfandabgabe;
+
+    private static Logger logger = LoggerFactory.getLogger(Kunde.class);
 
     public Kunde(int id) {
         this.korbAnzahl = randomKorbAnzahl();
@@ -32,7 +37,7 @@ public class Kunde implements Runnable {
 
         for (int i = 0; i < korbanzahl; i++) {
             korbZeit = this.korbErfassenDauer();
-            System.out.println("Der " + (i + 1) + ". Korb von " + this + " dauert " + korbZeit + " Sekunden.");
+            logger.info("Der " + (i + 1) + ". Korb von " + this + " dauert " + korbZeit + " Sekunden.");
             try {
                 Thread.sleep(korbZeit * Main.SECONDS);
             } catch (InterruptedException e) {
@@ -40,7 +45,7 @@ public class Kunde implements Runnable {
             }
         }
 
-        System.out.println(this + " ist fertig.");
+        logger.info(this + " ist fertig.");
         pfandabgabe.automatFreigeben(this);
     }
 

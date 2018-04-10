@@ -8,7 +8,7 @@ public class Main {
     private static Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws InterruptedException {
-        Pfandabgabe pfandabgabe = new Pfandabgabe(1);
+        Pfandabgabe pfandabgabe = new Pfandabgabe(3);
 
         logger.info("Parallele Systeme - Aufgabe 1: Pfandabgabe" + newLine + "Anna-Lena Schwarzkopf (62265)" + newLine + newLine);
 

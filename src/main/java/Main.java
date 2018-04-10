@@ -15,6 +15,8 @@ public class Main {
     private static Logger logger = LoggerFactory.getLogger(Main.class);
 
     private static ExecutorService pfandsystem = Executors.newFixedThreadPool(AUTOMATENANZAHL);
+    //private static ExecutorService pfandsystem = Executors.newCachedThreadPool();
+    //private static ExecutorService pfandsystem = Executors.newScheduledThreadPool(AUTOMATENANZAHL);
 
     public static void main(String[] args) throws InterruptedException {
         Pfandabgabe pfandabgabe = new Pfandabgabe(AUTOMATENANZAHL);

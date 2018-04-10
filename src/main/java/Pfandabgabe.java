@@ -1,9 +1,14 @@
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Random;
+import java.util.concurrent.locks.ReentrantLock;
+
+import java.util.concurrent.locks.Condition;
 
 public class Pfandabgabe {
+
+    private final ReentrantLock lock = new ReentrantLock();
+    private final Condition condition = lock.newCondition();
 
     private int freieAutomaten;
 
@@ -13,26 +18,34 @@ public class Pfandabgabe {
         this.freieAutomaten = automatenAnzahl;
     }
 
-    public synchronized void automatBenutzen(Kunde kunde) throws InterruptedException {
+    public void automatBenutzen(Kunde kunde) {
+        lock.lock();
         logger.info("Freie Automaten: " + freieAutomaten);
-        while (freieAutomaten == 0) {
-            logger.info("Gerade sind keine Automaten frei.");
-            try {
-                wait();
-            } catch (InterruptedException ie) {
+        try {
+            while (freieAutomaten == 0) {
+                logger.info("Gerade sind keine Automaten frei.");
+                try {
+                    condition.await();
+                } catch (InterruptedException ie) {
+                }
             }
+            freieAutomaten--;
+            kunde.setPfandabgabe(this);
+            System.out.println("Es ist ein Automat frei.");
+            System.out.println(kunde + " hat " + kunde.getKorbAnzahl() + " Körbe dabei und gibt diese ab.");
+        } finally {
+            lock.unlock();
         }
-        freieAutomaten--;
-        logger.info("Es ist ein Automat frei.");
-        logger.info(kunde + " hat " + kunde.getKorbAnzahl() + " Körbe dabei und gibt diese ab.");
-        kunde.setPfandabgabe(this);
-        Thread pfandAbgabeThread = new Thread(kunde);
-        pfandAbgabeThread.start();
     }
 
-    public synchronized void automatFreigeben(Kunde kunde) {
-        freieAutomaten++;
-        notify();
+    public void automatFreigeben() {
+        lock.lock();
+        try {
+            freieAutomaten++;
+            condition.signal();
+        } finally {
+            lock.unlock();
+        }
     }
 
 

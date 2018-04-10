@@ -46,7 +46,7 @@ public class Kunde implements Runnable {
         }
 
         logger.info(this + " ist fertig.");
-        pfandabgabe.automatFreigeben(this);
+        pfandabgabe.automatFreigeben();
     }
 
     public String toString() {

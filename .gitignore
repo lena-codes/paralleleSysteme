@@ -60,3 +60,5 @@ ParalleleSystemePfandAufgabe.txt
 
 #maven
 target/
+
+*.txt

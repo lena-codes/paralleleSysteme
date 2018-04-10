@@ -1,14 +1,26 @@
 <configuration>
+    <timestamp key="byDay" datePattern="yyyyMMdd'T'HHmmss"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoders are assigned the type
              ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
         <encoder>
-            <pattern>%d{HH:mm:ss} [%-9thread] | %msg%n</pattern>
+            <pattern>%d{HH:mm:ss} [%-15thread] | %msg%n</pattern>
         </encoder>
     </appender>
 
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>ParalleleSystemeLog-${byDay}.txt</file>
+        <append>false</append>
+
+        <encoder>
+            <pattern>%d{HH:mm:ss} [%-15thread] | %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
     <root level="debug">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="STDOUT"/>
     </root>
 </configuration>

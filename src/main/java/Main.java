@@ -21,11 +21,11 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         Pfandabgabe pfandabgabe = new Pfandabgabe(AUTOMATENANZAHL);
 
-        logger.info("Parallele Systeme - Aufgabe 2: Pfandabgabe" + newLine + "Anna-Lena Schwarzkopf (62265)" + newLine + newLine);
+        logger.info("Parallele Systeme - Aufgabe 3: Pfandabgabe" + newLine + "Anna-Lena Schwarzkopf (62265)" + newLine + newLine);
 
         for (int i = 0; i < 30; i++) {
             Kunde kunde = new Kunde(i + 1);
-            logger.info(kunde.toString() + " möchte Pfand abgeben!");
+            logger.info(kunde + " möchte Pfand abgeben!");
             pfandsystem.execute(kunde);
             pfandabgabe.automatBenutzen(kunde);
             Thread.sleep(5 * SECONDS);

@@ -1,10 +1,8 @@
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 public class Main {
 
@@ -12,11 +10,10 @@ public class Main {
     public static final int AUTOMATENANZAHL = 3;
 
     final static String newLine = System.getProperty("line.separator");
+
     private static Logger logger = LoggerFactory.getLogger(Main.class);
 
     private static ExecutorService pfandsystem = Executors.newFixedThreadPool(AUTOMATENANZAHL);
-    //private static ExecutorService pfandsystem = Executors.newCachedThreadPool();
-    //private static ExecutorService pfandsystem = Executors.newScheduledThreadPool(AUTOMATENANZAHL);
 
     public static void main(String[] args) throws InterruptedException {
         Pfandabgabe pfandabgabe = new Pfandabgabe(AUTOMATENANZAHL);
@@ -25,8 +22,25 @@ public class Main {
 
         for (int i = 0; i < 30; i++) {
             Kunde kunde = new Kunde(i + 1);
+
             logger.info(kunde + " möchte Pfand abgeben!");
-            pfandsystem.execute(kunde);
+            pfandsystem.execute(() -> {
+                int korbanzahl = kunde.getKorbAnzahl();
+                int korbZeit;
+
+                for (int y = 0; y < korbanzahl; y++) {
+                    korbZeit = kunde.korbErfassenDauer();
+                    logger.info("Der " + (y + 1) + ". Korb von " + kunde + " dauert " + korbZeit + " Sekunden.");
+                    try {
+                        Thread.sleep(korbZeit * Main.SECONDS);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                logger.info(kunde + " ist fertig.");
+                Pfandabgabe pfand = kunde.getPfandabgabe();
+                pfand.automatFreigeben();
+            });
             pfandabgabe.automatBenutzen(kunde);
             Thread.sleep(5 * SECONDS);
         }

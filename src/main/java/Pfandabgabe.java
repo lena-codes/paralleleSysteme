@@ -17,17 +17,16 @@ public class Pfandabgabe implements Runnable {
     @Override
     public void run() {
         try {
-            while(true) {
+            while (true) {
                 Kunde kunde = queue.take();
-                if(kunde.isPoisonPill()) {
+                if (kunde.isPoisonPill()) {
                     return;
                 }
                 logger.info(kunde + " hat " + kunde.getKorbAnzahl() + " Körbe dabei und gibt diese ab.");
                 int korbanzahl = kunde.getKorbAnzahl();
-                int korbZeit;
 
                 for (int y = 0; y < korbanzahl; y++) {
-                    korbZeit = kunde.korbErfassenDauer();
+                    int korbZeit = kunde.korbErfassenDauer();
                     logger.info("Der " + (y + 1) + ". Korb von " + kunde + " dauert " + korbZeit + " Sekunden.");
                     try {
                         Thread.sleep(korbZeit * Main.SECONDS);
@@ -40,6 +39,5 @@ public class Pfandabgabe implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
     }
 }

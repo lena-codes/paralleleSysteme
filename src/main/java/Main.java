@@ -20,7 +20,7 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         logger.info("Parallele Systeme - Aufgabe 4: Pfandabgabe" + newLine + "Anna-Lena Schwarzkopf (62265)" + newLine + newLine);
 
-        for(int i = 0; i < AUTOMATENANZAHL; i++) {
+        for (int i = 0; i < AUTOMATENANZAHL; i++) {
             new Thread(new Pfandabgabe(queue)).start();
         }
 
@@ -28,7 +28,7 @@ public class Main {
 
             boolean isGoldkunde = new Random().nextDouble() <= GOLDKUNDENPROZENT;
             Kunde kunde;
-            if(isGoldkunde) {
+            if (isGoldkunde) {
                 kunde = new Goldkunde(i + 1);
             } else {
                 kunde = new Kunde(i + 1);
@@ -39,7 +39,7 @@ public class Main {
             Thread.sleep(5 * SECONDS);
         }
 
-        for(int i = 0; i < AUTOMATENANZAHL; i++) {
+        for (int i = 0; i < AUTOMATENANZAHL; i++) {
             queue.put(new Kunde(true));
         }
 

@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class Kunde implements Comparable<Kunde>{
+public class Kunde implements Comparable<Kunde> {
 
     protected int id;
     protected int korbAnzahl;
@@ -41,14 +41,13 @@ public class Kunde implements Comparable<Kunde>{
     @Override
     public int compareTo(Kunde o) {
         if (this instanceof Goldkunde) {
-            if(o instanceof Kunde) {
+            if (o instanceof Kunde) {
                 return -1;
             } else {
                 return 0;
             }
-        }
-        else {
-            if(o instanceof Goldkunde) {
+        } else {
+            if (o instanceof Goldkunde) {
                 return 1;
             } else {
                 return 0;

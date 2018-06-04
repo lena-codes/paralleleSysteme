@@ -1,6 +1,6 @@
 public class Goldkunde extends Kunde {
-    public Goldkunde(int i) {
-        super(i);
+    public Goldkunde(int id) {
+        super(id);
     }
 
     @Override

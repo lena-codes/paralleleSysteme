@@ -2,17 +2,15 @@ import java.util.Random;
 
 public class Kunde {
 
-    private final int id;
-    private int korbAnzahl;
-    private Pfandabgabe pfandabgabe;
-
+    protected int id;
+    protected int korbAnzahl;
 
     public Kunde(int id) {
         this.korbAnzahl = randomKorbAnzahl();
         this.id = id;
     }
 
-    private static int randomKorbAnzahl() {
+    public int randomKorbAnzahl() {
         Random random = new Random();
         return random.nextInt(3) + 2;
     }
@@ -30,11 +28,4 @@ public class Kunde {
         return "Kunde#" + id;
     }
 
-    public void setPfandabgabe(Pfandabgabe pfandabgabe) {
-        this.pfandabgabe = pfandabgabe;
-    }
-
-    public Pfandabgabe getPfandabgabe() {
-        return pfandabgabe;
-    }
 }

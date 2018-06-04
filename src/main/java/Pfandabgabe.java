@@ -1,27 +1,42 @@
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.BlockingQueue;
 
-public class Pfandabgabe {
+public class Pfandabgabe implements Runnable {
 
-    private final Semaphore sem;
 
     private static Logger logger = LoggerFactory.getLogger(Pfandabgabe.class);
 
-    public Pfandabgabe(int automatenAnzahl) {
-        sem = new Semaphore(automatenAnzahl);
+    private BlockingQueue<Kunde> queue;
+
+    public Pfandabgabe(BlockingQueue<Kunde> queue) {
+        this.queue = queue;
     }
 
-    public void automatBenutzen(Kunde kunde) throws InterruptedException {
-        logger.info("Freie Automaten: " + sem.availablePermits());
-        sem.acquire();
-        kunde.setPfandabgabe(this);
-        logger.info(kunde + " hat " + kunde.getKorbAnzahl() + " Körbe dabei und gibt diese ab.");
-    }
+    @Override
+    public void run() {
+        try {
+            while(true) {
+                Kunde kunde = queue.take();
+                logger.info(kunde + " hat " + kunde.getKorbAnzahl() + " Körbe dabei und gibt diese ab.");
+                int korbanzahl = kunde.getKorbAnzahl();
+                int korbZeit;
 
-    public void automatFreigeben() {
-        sem.release();
-    }
+                for (int y = 0; y < korbanzahl; y++) {
+                    korbZeit = kunde.korbErfassenDauer();
+                    logger.info("Der " + (y + 1) + ". Korb von " + kunde + " dauert " + korbZeit + " Sekunden.");
+                    try {
+                        Thread.sleep(korbZeit * Main.SECONDS);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                logger.info(kunde + " ist fertig.");
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
+    }
 }

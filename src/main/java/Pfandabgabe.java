@@ -19,6 +19,9 @@ public class Pfandabgabe implements Runnable {
         try {
             while(true) {
                 Kunde kunde = queue.take();
+                if(kunde.isPoisonPill()) {
+                    return;
+                }
                 logger.info(kunde + " hat " + kunde.getKorbAnzahl() + " Körbe dabei und gibt diese ab.");
                 int korbanzahl = kunde.getKorbAnzahl();
                 int korbZeit;
